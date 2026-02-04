@@ -1,0 +1,16 @@
+# Logger Configuration (Weights & Biases example)
+# Contains: logger target, project/run identifiers, online/offline toggles
+
+_target_: lightning.pytorch.loggers.WandbLogger
+
+# Project / Run Identifiers
+project: "ml-project"
+name: null
+entity: null
+
+# Save / Storage
+save_dir: ${paths.log_dir}
+tags: ${tags}
+
+# Online / Offline
+offline: false

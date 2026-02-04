@@ -1,0 +1,22 @@
+# DataModule Configuration (CIFAR-10 example)
+# Contains: dataset identity, data splits, loading params, transforms
+
+_target_: src.data.cifar10.CIFAR10DataModule
+
+# Dataset Identity
+dataset_name: "cifar10"
+data_dir: ${paths.data_dir}
+
+# Data Split
+val_split: 0.1
+test_split: 0.0
+
+# Batch & Loader
+batch_size: 128
+num_workers: 8
+pin_memory: true
+persistent_workers: true
+
+# Transforms / Augmentation
+augment: true
+normalize: true

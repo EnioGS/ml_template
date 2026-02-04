@@ -1,0 +1,3 @@
+# Project-specific requirements
+# Add any additional dependencies required by this specific project here
+# The core ML stack is defined in core_requirements.txt

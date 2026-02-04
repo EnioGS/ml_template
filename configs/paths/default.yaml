@@ -1,0 +1,8 @@
+# Hydra Paths Configuration
+# Contains: I/O paths only (data_dir, log_dir, output_dir, etc.)
+
+data_dir: ${oc.env:DATA_DIR, "data"}
+log_dir: ${oc.env:LOG_DIR, "logs"}
+output_dir: ${hydra:runtime.output_dir}
+ckpt_dir: ${paths.output_dir}/checkpoints
+cache_dir: ${oc.env:CACHE_DIR, ".cache"}

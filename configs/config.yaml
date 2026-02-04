@@ -1,0 +1,26 @@
+# Root Hydra Configuration
+# Contains: defaults composition, global metadata, shared toggles
+
+defaults:
+  - paths: default
+  - trainer: default
+  - model: resnet
+  - datamodule: cifar10
+  - optimizer: adam
+  - scheduler: cosine
+  - callbacks: default
+  - logger: wandb
+  - hydra: default
+  - _self_
+
+# Global run metadata
+seed: 42
+task_name: "train"
+tags: []
+ckpt_path: null
+resume: false
+
+# Shared toggles (affect multiple components)
+debug: false
+compile: false
+float32_matmul_precision: "high"

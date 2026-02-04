@@ -1,0 +1,11 @@
+# Hydra Runtime Configuration
+# Contains: output directory pattern, sweep directory pattern, job naming
+
+hydra:
+  run:
+    dir: ${paths.log_dir}/${task_name}/${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: ${paths.log_dir}/multirun/${now:%Y-%m-%d_%H-%M-%S}
+    subdir: ${hydra.job.num}
+  job:
+    chdir: false

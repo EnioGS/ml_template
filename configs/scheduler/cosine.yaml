@@ -1,0 +1,12 @@
+# Scheduler Configuration (Cosine Annealing example)
+# Contains: scheduler target, hyperparams (T_max, eta_min, warmup, interval, frequency)
+
+_target_: torch.optim.lr_scheduler.CosineAnnealingLR
+
+# Scheduler Hyperparams
+T_max: 50
+eta_min: 1e-6
+
+# Lightning Scheduler Dict
+interval: "epoch"
+frequency: 1
