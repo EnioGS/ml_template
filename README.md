@@ -84,7 +84,7 @@ Full documentation and detailed guides:
 |----------|-------------|
 | [File Structure](docs/file_structure.md) | Complete directory layout and file organization. Explains purpose of each directory and configuration ownership. |
 | [Architecture](docs/architecture.md) | System architecture, design decisions, and high-level overview of components and their interactions. |
-| [Requirements & Setup](docs/requirements.md) | Environment setup, dependency management, installation instructions, and troubleshooting. |
+| [Requirements](docs/requirements.md) | Project requirements. |
 | [Architecture Decision Records](docs/adrs/) | Detailed decision logs explaining key architectural choices and their rationale. |
 
 ## Key Features
