@@ -1,0 +1,32 @@
+# Small Transformer Experiment (faster iteration)
+# Contains: overrides for smaller model + larger batch
+
+defaults:
+  - override /model: transformer_encoder
+  - override /datamodule: text
+  - override /optimizer: adamw_transformer
+  - override /scheduler: warmup_cosine
+  - override /trainer: transformer
+  - _self_
+
+# Model overrides (smaller architecture via nested backbone)
+model:
+  backbone:
+    d_model: 384
+    n_layers: 6
+    n_heads: 6
+    d_ff: 1536
+    max_seq_len: 256
+
+# DataModule overrides
+datamodule:
+  batch_size: 64
+  max_seq_len: 256
+
+# Optimizer overrides
+optimizer:
+  lr: 1e-4
+
+# Scheduler overrides
+scheduler:
+  num_warmup_steps: 500

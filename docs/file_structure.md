@@ -34,25 +34,35 @@ configs/
 ├── trainer/
 │   └── default.yaml      # Trainer behavior & hardware
 ├── model/
-│   ├── resnet.yaml       # ResNet architecture example
-│   └── ...               # Other model variants
+│   ├── transformer_encoder.yaml   # BERT-like (encoder-only)
+│   ├── transformer_decoder.yaml   # GPT-like (decoder-only)
+│   ├── transformer_seq2seq.yaml   # T5-like (encoder-decoder)
+│   └── ...                        # Other model variants
 ├── datamodule/
-│   ├── cifar10.yaml      # CIFAR-10 dataset example
-│   └── ...               # Other datasets
+│   ├── cifar10.yaml              # Vision dataset (CIFAR-10) example
+│   ├── text.yaml                 # Text dataset (tokenization) example
+│   └── ...                       # Other datasets
 ├── optimizer/
-│   ├── adam.yaml         # AdamW optimizer example
-│   └── ...               # Other optimizers
+│   ├── adam.yaml                 # Standard AdamW example
+│   ├── adamw_transformer.yaml    # Transformer-optimized AdamW
+│   └── ...                       # Other optimizers
 ├── scheduler/
-│   ├── cosine.yaml       # Cosine annealing scheduler example
-│   └── ...               # Other schedulers
+│   ├── cosine.yaml               # Basic cosine annealing example
+│   ├── warmup_cosine.yaml        # Warmup + cosine (Transformer-typical)
+│   └── ...                       # Other schedulers
 ├── callbacks/
-│   └── default.yaml      # Training callbacks (checkpoint, early stop, etc.)
+│   └── default.yaml              # Training callbacks (checkpoint, early stop, etc.)
 ├── logger/
-│   ├── wandb.yaml        # Weights & Biases logger example
-│   └── ...               # Other loggers
+│   ├── wandb.yaml                # Weights & Biases logger example
+│   └── ...                       # Other loggers
 ├── experiment/
-│   ├── exp1.yaml         # Experiment override example
-│   └── ...               # Other experiments
+│   ├── transformer_small.yaml    # Small model, fast iteration
+│   ├── transformer_base.yaml     # BERT-base equivalent
+│   └── ...                       # Other experiments
+├── trainer/
+│   ├── default.yaml              # General training configuration
+│   ├── transformer.yaml          # Transformer-optimized (gradient clipping)
+│   └── ...                       # Other trainer variants
 └── hydra/
     └── default.yaml      # Hydra runtime & output directories
 ```
@@ -76,8 +86,10 @@ configs/
 
 **configs/model/** (LightningModule + architecture)
 - _target_ for your LightningModule
-- architecture hyperparams (backbone, depth, hidden sizes, dropout, pretrained)
+- task-specific params (task type, num_classes, pooling_strategy)
 - loss/metrics (label_smoothing, etc.)
+- Nested `backbone:` with _target_ to pure PyTorch modules (for Transformers)
+- Architecture hyperparams nested under backbone (d_model, n_layers, n_heads, etc.) or inline for simpler models
 - model-level regularization
 
 **configs/datamodule/** (Dataset + loading + transforms)
@@ -86,6 +98,7 @@ configs/
 - data paths (data_dir from paths config)
 - batch & loader (batch_size, num_workers, pin_memory)
 - transforms/augmentations
+- For Transformers: tokenizer name/path, max_seq_len, padding, truncation
 
 **configs/optimizer/** (Optimizer only)
 - optimizer _target_
@@ -114,6 +127,12 @@ configs/
 **configs/experiment/** (Experiment overrides)
 - Composition of which configs to override
 - Value overrides relative to defaults
+
+**Important for Transformers:**
+- Tokenizer name/path lives in **datamodule config**, NOT model config
+- max_seq_len for tokenization (data padding) in datamodule, max_seq_len for positional encoding (model) in model
+- Padding/truncation strategy is a **data concern**, not a model concern
+- This separation ensures configs stay clean and reusable
 
 ## src/ - Main Python Package
 
@@ -262,20 +281,21 @@ pip install -r requirements-dev.txt
 # Load environment variables
 source .env
 
-# Train with default config
-python src/train.py
+# Train with Transformer experiments
+python src/train.py experiment=transformer_base
+python src/train.py experiment=transformer_small
 
-# Train with specific experiment
-python src/train.py --config-name=config experiment=exp1
+# Train with specific overrides
+python src/train.py experiment=transformer_base model.backbone.n_layers=6
 
 # Evaluate
-python src/eval.py model=resnet
+python src/eval.py experiment=transformer_base
 
 # Run inference
-python src/predict.py
+python src/predict.py experiment=transformer_base
 
 # Export model
-python src/export.py
+python src/export.py experiment=transformer_base
 
 # Run tests
 pytest tests/

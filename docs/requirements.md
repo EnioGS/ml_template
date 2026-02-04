@@ -13,6 +13,7 @@ Core ML stack dependencies that are stable and rarely change across projects:
 - **Hydra & OmegaConf** - Configuration management
 - **NumPy, Pandas, scikit-learn** - Data & scientific computing
 - **Weights & Biases** - Experiment tracking & logging
+- **Transformers** - HuggingFace library for NLP models & schedulers
 - **python-dotenv, PyYAML** - Utilities
 
 Install with: `pip install -r requirements-core.txt`

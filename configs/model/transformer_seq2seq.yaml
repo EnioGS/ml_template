@@ -1,0 +1,38 @@
+# Transformer Encoder-Decoder Configuration (T5-like)
+# Contains: LightningModule target, task config, nested encoder/decoder
+
+_target_: src.models.transformer_module.TransformerSeq2SeqLitModule
+
+# Task Configuration
+task: seq2seq                   # seq2seq / translation / summarization
+label_smoothing: 0.1
+
+# Backbone Architecture (nested pattern with encoder/decoder)
+backbone:
+  _target_: src.modules.transformer.TransformerSeq2Seq
+  tie_embeddings: true
+
+  encoder:
+    _target_: src.modules.transformer.TransformerEncoder
+    vocab_size: 32128
+    d_model: 512
+    n_layers: 6
+    n_heads: 8
+    d_ff: 2048
+    dropout: 0.1
+    attention_dropout: 0.1
+    max_seq_len: 512
+    activation: "relu"
+
+  decoder:
+    _target_: src.modules.transformer.TransformerDecoder
+    vocab_size: 32128
+    d_model: 512
+    n_layers: 6
+    n_heads: 8
+    d_ff: 2048
+    dropout: 0.1
+    attention_dropout: 0.1
+    max_seq_len: 512
+    activation: "relu"
+    causal: true

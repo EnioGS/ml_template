@@ -3,11 +3,8 @@
 
 defaults:
   - paths: default
-  - trainer: default
-  - model: resnet
-  - datamodule: cifar10
-  - optimizer: adam
-  - scheduler: cosine
+  # Model, datamodule, optimizer, scheduler: specify via experiments
+  # Example: python src/train.py experiment=transformer_base
   - callbacks: default
   - logger: wandb
   - hydra: default

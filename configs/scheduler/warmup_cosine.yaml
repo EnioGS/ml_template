@@ -1,0 +1,13 @@
+# Warmup + Cosine Annealing Scheduler (Transformer-typical)
+# Contains: scheduler params (NO _target_, instantiated in configure_optimizers)
+
+# Scheduler type identifier
+name: cosine_warmup
+
+# Scheduler Hyperparams
+num_warmup_steps: 1000
+num_training_steps: ${trainer.max_steps}
+
+# Lightning Scheduler Dict params
+interval: "step"
+frequency: 1

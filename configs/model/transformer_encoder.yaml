@@ -1,0 +1,25 @@
+# Transformer Encoder Configuration (BERT-like)
+# Contains: LightningModule target, task config, nested backbone
+
+_target_: src.models.transformer_module.TransformerEncoderLitModule
+
+# Task Configuration
+task: classification            # classification / sequence_labeling / mlm
+num_classes: 2                  # for classification tasks
+label_smoothing: 0.0
+
+# Pooling (for classification)
+pooling_strategy: "cls"         # cls / mean / max
+
+# Backbone Architecture (nested pattern)
+backbone:
+  _target_: src.modules.transformer.TransformerEncoder
+  vocab_size: 30522
+  d_model: 768
+  n_layers: 12
+  n_heads: 12
+  d_ff: 3072
+  dropout: 0.1
+  attention_dropout: 0.1
+  max_seq_len: 512
+  activation: "gelu"

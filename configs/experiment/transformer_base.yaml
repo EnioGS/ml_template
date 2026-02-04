@@ -1,0 +1,23 @@
+# Base Transformer Experiment (BERT-base equivalent)
+# Contains: standard BERT-base configuration
+
+defaults:
+  - override /model: transformer_encoder
+  - override /datamodule: text
+  - override /optimizer: adamw_transformer
+  - override /scheduler: warmup_cosine
+  - override /trainer: transformer
+  - _self_
+
+# Use defaults from model/transformer_encoder.yaml
+# (768 hidden, 12 layers, 12 heads)
+
+# DataModule overrides
+datamodule:
+  batch_size: 32
+  tokenizer_name: "bert-base-uncased"
+
+# Training overrides
+trainer:
+  max_epochs: 3
+  gradient_clip_val: 1.0
